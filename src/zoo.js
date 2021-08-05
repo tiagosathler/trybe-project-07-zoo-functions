@@ -63,9 +63,53 @@ function calculateEntry(entrants) {
   }, 0);
 }
 
+const filterBySex = (namesArrays, sexArrays, kindOfSex) =>
+  namesArrays.map((kindOfAnimal, index1) =>
+    kindOfAnimal.filter((nameOfAnimal, index2) => sexArrays[index1][index2] === kindOfSex));
+
+const applyOptions = (namesArrays, sexArrays, options) => {
+  let result = namesArrays;
+  if (options.sex === 'male') {
+    result = filterBySex(namesArrays, sexArrays, 'male');
+  }
+  if (options.sex === 'female') {
+    result = filterBySex(namesArrays, sexArrays, 'female');
+  }
+  if (options.sorted) {
+    result.forEach((kindOfAnimal) => kindOfAnimal.sort());
+  }
+  return result;
+};
+
+const filterAnimals = (region, options = {}) => {
+  const animalsByRegion = species
+    .filter((animal) => animal.location === region);
+  const kindsOfAnimals = animalsByRegion.map((kindOfAnimal) => kindOfAnimal.name);
+  const allAnimalsPerKind = animalsByRegion.map((kindOfAnimal) =>
+    kindOfAnimal.residents.map((resident) => resident.name));
+  const allSexPerKind = animalsByRegion.map((kindOfAnimal) =>
+    kindOfAnimal.residents.map((resident) => resident.sex));
+  let arraysOfNames;
+  if (options.includeNames) {
+    arraysOfNames = applyOptions(allAnimalsPerKind, allSexPerKind, options);
+  } else {
+    return kindsOfAnimals;
+  }
+  return animalsByRegion.map((kindOfAnimal, index) =>
+    ({ [kindOfAnimal.name]: arraysOfNames[index] }));
+};
+
 function getAnimalMap(options) {
-  // seu código aqui
+  return {
+    NE: filterAnimals('NE', options),
+    NW: filterAnimals('NW', options),
+    SE: filterAnimals('SE', options),
+    SW: filterAnimals('SW', options),
+  };
 }
+
+// console.table(getAnimalMap({includesNames: true}));
+// console.log(getAnimalMap({ includeNames: true, sex: 'female'}));
 
 function getSchedule(dayName) {
   // seu código aqui
