@@ -108,11 +108,20 @@ function getAnimalMap(options) {
   };
 }
 
-// console.table(getAnimalMap({includesNames: true}));
-// console.log(getAnimalMap({ includeNames: true, sex: 'female'}));
-
-function getSchedule(dayName) {
-  // seu código aqui
+function getSchedule(dayName = 'all') {
+  const allDays = {
+    Tuesday: 'Open from 8am until 6pm',
+    Wednesday: 'Open from 8am until 6pm',
+    Thursday: 'Open from 10am until 8pm',
+    Friday: 'Open from 10am until 8pm',
+    Saturday: 'Open from 8am until 10pm',
+    Sunday: 'Open from 8am until 8pm',
+    Monday: 'CLOSED',
+  };
+  if (dayName === 'all') {
+    return allDays;
+  }
+  return { [dayName]: allDays[dayName] };
 }
 
 function getOldestFromFirstSpecies(id) {
