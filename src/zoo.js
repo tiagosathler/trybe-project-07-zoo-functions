@@ -130,20 +130,10 @@ function getOldestFromFirstSpecies(id) {
   return [object.name, object.sex, object.age];
 }
 
-const fooBar = (number) => {
-  const integer = Math.floor(number);
-  const decimal = Math.ceil((number - integer) * 100);
-  const result = Number.parseFloat((integer + decimal / 100).toFixed(2));
-  return result;
-};
-
 function increasePrices(percentage) {
-  prices.Adult *= 1 + percentage / 100;
-  prices.Senior *= 1 + percentage / 100;
-  prices.Child *= 1 + percentage / 100;
-  prices.Adult = fooBar(prices.Adult);
-  prices.Senior = fooBar(prices.Senior);
-  prices.Child = fooBar(prices.Child);
+  prices.Adult = Math.ceil(100 * prices.Adult * (1 + percentage / 100)) / 100;
+  prices.Senior = Math.ceil(100 * prices.Senior * (1 + percentage / 100)) / 100;
+  prices.Child = Math.ceil(100 * prices.Child * (1 + percentage / 100)) / 100;
 }
 
 function getEmployeeCoverage(idOrName) {
