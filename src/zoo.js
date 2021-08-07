@@ -131,14 +131,18 @@ function getOldestFromFirstSpecies(id) {
 }
 
 function increasePrices(percentage) {
-  prices.Adult = Math.ceil(100 * prices.Adult * (1 + percentage / 100)) / 100;
-  prices.Senior = Math.ceil(100 * prices.Senior * (1 + percentage / 100)) / 100;
-  prices.Child = Math.ceil(100 * prices.Child * (1 + percentage / 100)) / 100;
+  prices.Adult = Math.round(100 * prices.Adult * (1 + percentage / 100)) / 100;
+  prices.Senior = Math.round(100 * prices.Senior * (1 + percentage / 100)) / 100;
+  prices.Child = Math.round(100 * prices.Child * (1 + percentage / 100)) / 100;
 }
 
 function getEmployeeCoverage(idOrName) {
-  // seu código aqui
+  const allEmployees = employees.map((person) =>
+    ({ [`${person.firstName} ${person.lastName}`]: person.responsibleFor }));
+  return allEmployees;
 }
+
+// console.log(getEmployeeCoverage());
 
 module.exports = {
   calculateEntry,
