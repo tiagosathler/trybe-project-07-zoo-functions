@@ -136,13 +136,30 @@ function increasePrices(percentage) {
   prices.Child = Math.round(100 * prices.Child * (1 + percentage / 100)) / 100;
 }
 
-function getEmployeeCoverage(idOrName) {
-  const allEmployees = employees.map((person) =>
-    ({ [`${person.firstName} ${person.lastName}`]: person.responsibleFor }));
-  return allEmployees;
-}
+const replaceSpeciesId2Name = (array) =>
+  array.map((id) =>
+    species.find((specie) =>
+      specie.id === id).name);
 
-// console.log(getEmployeeCoverage());
+function getEmployeeCoverage(idOrName = 'all') {
+  const fullNames = [];
+  const ids = [];
+  const allEmployees = employees.reduce((object, person) => {
+    const fullName = `${person.firstName} ${person.lastName}`;
+    fullNames.push(fullName);
+    ids.push(person.id);
+    const entrie = { [fullName]: replaceSpeciesId2Name(person.responsibleFor) };
+    Object.assign(object, entrie);
+    return object;
+  }, {});
+  if (idOrName === 'all') {
+    return allEmployees;
+  }
+  const fullName = fullNames.find((name, index) =>
+    name.split(' ').includes(idOrName) || ids[index] === idOrName);
+  const index = fullNames.indexOf(fullName);
+  return { [Object.keys(allEmployees)[index]]: Object.values(allEmployees)[index] };
+}
 
 module.exports = {
   calculateEntry,
