@@ -60,17 +60,12 @@ function calculateEntry(entrants) {
   }, 0);
 }
 
-const filterBySex = (namesArrays, sexArrays, kindOfSex) =>
-  namesArrays.map((kindOfAnimal, index1) =>
-    kindOfAnimal.filter((nameOfAnimal, index2) => sexArrays[index1][index2] === kindOfSex));
-
-const applyOptions = (namesArrays, sexArrays, options) => {
+const applyOptions = (namesArrays, sexesArrays, options) => {
   let result = namesArrays;
-  if (options.sex === 'male') {
-    result = filterBySex(namesArrays, sexArrays, 'male');
-  }
-  if (options.sex === 'female') {
-    result = filterBySex(namesArrays, sexArrays, 'female');
+  if (options.sex) {
+    result = namesArrays.map((kindOfAnimal, index1) =>
+      kindOfAnimal.filter((nameOfAnimal, index2) =>
+        sexesArrays[index1][index2] === options.sex));
   }
   if (options.sorted) {
     result.forEach((kindOfAnimal) => kindOfAnimal.sort());
@@ -81,16 +76,16 @@ const applyOptions = (namesArrays, sexArrays, options) => {
 const filterAnimals = (region, options = {}) => {
   const animalsByRegion = species
     .filter((animal) => animal.location === region);
-  const kindsOfAnimals = animalsByRegion.map((kindOfAnimal) => kindOfAnimal.name);
-  const allAnimalsPerKind = animalsByRegion.map((kindOfAnimal) =>
+  const typesOfAnimals = animalsByRegion.map((kindOfAnimal) => kindOfAnimal.name);
+  const allAnimalsByType = animalsByRegion.map((kindOfAnimal) =>
     kindOfAnimal.residents.map((resident) => resident.name));
-  const allSexPerKind = animalsByRegion.map((kindOfAnimal) =>
+  const allAnimalSexesByType = animalsByRegion.map((kindOfAnimal) =>
     kindOfAnimal.residents.map((resident) => resident.sex));
   let arraysOfNames;
   if (options.includeNames) {
-    arraysOfNames = applyOptions(allAnimalsPerKind, allSexPerKind, options);
+    arraysOfNames = applyOptions(allAnimalsByType, allAnimalSexesByType, options);
   } else {
-    return kindsOfAnimals;
+    return typesOfAnimals;
   }
   return animalsByRegion.map((kindOfAnimal, index) =>
     ({ [kindOfAnimal.name]: arraysOfNames[index] }));
