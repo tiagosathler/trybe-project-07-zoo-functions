@@ -51,8 +51,7 @@ function calculateEntry(entrants) {
     return 0;
   }
   return Object.entries(prices).reduce((sum, entriesPair) => {
-    const key = entriesPair[0];
-    const value = entriesPair[1];
+    const [key, value] = entriesPair;
     if (Object.keys(entrants).includes(key)) {
       return sum + value * entrants[key];
     }
