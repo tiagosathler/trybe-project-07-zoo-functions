@@ -49,8 +49,7 @@ function calculateEntry(entrants) {
   if (entrants === undefined || Object.keys(entrants).length === 0) {
     return 0;
   }
-  return Object.entries(prices).reduce((sum, entriesPair) => {
-    const [key, value] = entriesPair;
+  return Object.entries(prices).reduce((sum, [key, value]) => {
     if (Object.keys(entrants).includes(key)) {
       return sum + value * entrants[key];
     }
