@@ -136,23 +136,20 @@ const replaceSpeciesId2Name = (array) =>
       specie.id === id).name);
 
 function getEmployeeCoverage(idOrName = 'all') {
-  const fullNames = [];
-  const ids = [];
-  const allEmployees = employees.reduce((object, person) => {
+  const allEmployees = employees.reduce((acc, person) => {
     const fullName = `${person.firstName} ${person.lastName}`;
-    fullNames.push(fullName);
-    ids.push(person.id);
-    const entrie = { [fullName]: replaceSpeciesId2Name(person.responsibleFor) };
-    Object.assign(object, entrie);
-    return object;
+    acc[fullName] = replaceSpeciesId2Name(person.responsibleFor);
+    return acc;
   }, {});
   if (idOrName === 'all') {
     return allEmployees;
   }
-  const fullName = fullNames.find((name, index) =>
-    name.split(' ').includes(idOrName) || ids[index] === idOrName);
-  const index = fullNames.indexOf(fullName);
-  return { [Object.keys(allEmployees)[index]]: Object.values(allEmployees)[index] };
+  const { firstName, lastName } = employees.find((person) =>
+    person.firstName === idOrName
+    || person.lastName === idOrName
+    || person.id === idOrName);
+  const fullName = `${firstName} ${lastName}`;
+  return { [fullName]: allEmployees[fullName] };
 }
 
 module.exports = {
