@@ -80,12 +80,10 @@ const filterAnimals = (region, options = {}) => {
     kindOfAnimal.residents.map((resident) => resident.name));
   const allAnimalSexesByType = animalsByRegion.map((kindOfAnimal) =>
     kindOfAnimal.residents.map((resident) => resident.sex));
-  let arraysOfNames;
-  if (options.includeNames) {
-    arraysOfNames = applyOptions(allAnimalsByType, allAnimalSexesByType, options);
-  } else {
+  if (!options.includeNames) {
     return typesOfAnimals;
   }
+  const arraysOfNames = applyOptions(allAnimalsByType, allAnimalSexesByType, options);
   return animalsByRegion.map((kindOfAnimal, index) =>
     ({ [kindOfAnimal.name]: arraysOfNames[index] }));
 };
