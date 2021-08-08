@@ -128,9 +128,10 @@ function getOldestFromFirstSpecies(id) {
 }
 
 function increasePrices(percentage) {
-  prices.Adult = Math.round(100 * prices.Adult * (1 + percentage / 100)) / 100;
-  prices.Senior = Math.round(100 * prices.Senior * (1 + percentage / 100)) / 100;
-  prices.Child = Math.round(100 * prices.Child * (1 + percentage / 100)) / 100;
+  Object.entries(prices).forEach((entriesPair) => {
+    const [key, value] = entriesPair;
+    prices[key] = Math.round(100 * value * (1 + percentage / 100)) / 100;
+  });
 }
 
 const replaceSpeciesId2Name = (array) =>
