@@ -121,9 +121,10 @@ function getSchedule(dayName = 'all') {
 
 function getOldestFromFirstSpecies(id) {
   const specieId = employees.find((person) => person.id === id).responsibleFor[0];
-  const object = species.find((kindOfAnimal) =>
-    kindOfAnimal.id === specieId).residents.sort((a, b) => b.age - a.age)[0];
-  return [object.name, object.sex, object.age];
+  const animalObj = species.find((kindOfAnimal) =>
+    kindOfAnimal.id === specieId)
+    .residents.sort((a, b) => b.age - a.age)[0];
+  return Object.values(animalObj);
 }
 
 function increasePrices(percentage) {
