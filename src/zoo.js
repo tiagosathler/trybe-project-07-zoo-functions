@@ -57,14 +57,14 @@ function calculateEntry(entrants) {
   }, 0);
 }
 
-const applyOptions = (namesArrays, sexesArrays, options) => {
+const applyOptions = (namesArrays, sexesArrays, { sex, sorted }) => {
   let result = namesArrays;
-  if (options.sex) {
+  if (sex) {
     result = namesArrays.map((kindOfAnimal, index1) =>
       kindOfAnimal.filter((nameOfAnimal, index2) =>
-        sexesArrays[index1][index2] === options.sex));
+        sexesArrays[index1][index2] === sex));
   }
-  if (options.sorted) {
+  if (sorted) {
     result.forEach((kindOfAnimal) => kindOfAnimal.sort());
   }
   return result;
