@@ -100,13 +100,8 @@ function getAnimalMap(options) {
   };
 }
 
-const getDaySchedule = (schedule) => {
-  if (schedule.open === 0 || schedule.close === 0) {
-    return 'CLOSED';
-  }
-  const afternoon = schedule.close - 12;
-  return `Open from ${schedule.open}am until ${afternoon}pm`;
-};
+const getDaySchedule = ({ open, close }) =>
+  (open === close ? 'CLOSED' : `Open from ${open}am until ${close - 12}pm`);
 
 function getSchedule(dayName = 'all') {
   const allDays = {
