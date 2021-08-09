@@ -45,16 +45,8 @@ function countAnimals(animal) {
 }
 
 // Requisito 08
-function calculateEntry(entrants) {
-  if (entrants === undefined || Object.keys(entrants).length === 0) {
-    return 0;
-  }
-  return Object.entries(prices).reduce((sum, [key, value]) => {
-    if (Object.keys(entrants).includes(key)) {
-      return sum + value * entrants[key];
-    }
-    return sum;
-  }, 0);
+function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0 } = 0) {
+  return adult * prices.Adult + child * prices.Child + senior * prices.Senior;
 }
 
 const applyOptions = (namesArrays, sexesArrays, { sex, sorted }) => {
