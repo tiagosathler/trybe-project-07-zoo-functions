@@ -36,13 +36,12 @@ function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []
 
 // Requisito 07
 function countAnimals(animal) {
-  if (animal === undefined) {
-    return species.reduce((acc, kindOfAnimal) => {
+  return animal
+    ? species.find((kindOfAnimal) => kindOfAnimal.name === animal).residents.length
+    : species.reduce((acc, kindOfAnimal) => {
       acc[kindOfAnimal.name] = kindOfAnimal.residents.length;
       return acc;
     }, {});
-  }
-  return species.find((kindOfAnimal) => kindOfAnimal.name === animal).residents.length;
 }
 
 // Requisito 08
