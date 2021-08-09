@@ -88,24 +88,15 @@ function getAnimalMap(options) {
   };
 }
 
-const getDaySchedule = ({ open, close }) =>
-  (open === close ? 'CLOSED' : `Open from ${open}am until ${close - 12}pm`);
-
 // Requisito 10
-function getSchedule(dayName = 'all') {
-  const allDays = {
-    Tuesday: `${getDaySchedule(hours.Tuesday)}`,
-    Wednesday: `${getDaySchedule(hours.Wednesday)}`,
-    Thursday: `${getDaySchedule(hours.Thursday)}`,
-    Friday: `${getDaySchedule(hours.Friday)}`,
-    Saturday: `${getDaySchedule(hours.Saturday)}`,
-    Sunday: `${getDaySchedule(hours.Sunday)}`,
-    Monday: `${getDaySchedule(hours.Monday)}`,
-  };
-  if (dayName === 'all') {
-    return allDays;
-  }
-  return { [dayName]: allDays[dayName] };
+function getSchedule(dayName) {
+  const allDays = Object.entries(hours).reduce((acc, [day, { open, close }]) => {
+    acc[day] = open === close
+      ? 'CLOSED'
+      : `Open from ${open}am until ${close - 12}pm`;
+    return acc;
+  }, {});
+  return dayName ? { [dayName]: allDays[dayName] } : allDays;
 }
 
 // Requisito 11
