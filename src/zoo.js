@@ -1,6 +1,7 @@
 const { species, employees, hours, prices } = require('./data');
 const data = require('./data');
 
+// Requisito 01
 function getSpeciesByIds(...ids) {
   if (ids.length === 0) {
     return [];
@@ -8,12 +9,14 @@ function getSpeciesByIds(...ids) {
   return ids.map((id) => species.filter((kind) => kind.id === id)[0]);
 }
 
+// Requisito 02
 function getAnimalsOlderThan(animal, age) {
   return species
     .find((specie) => specie.name === animal)
     .residents.every((resident) => resident.age >= age);
 }
 
+// Requisito 03
 function getEmployeeByName(employeeName) {
   if (employeeName === undefined) {
     return {};
@@ -22,19 +25,23 @@ function getEmployeeByName(employeeName) {
     .find((person) => person.firstName === employeeName || person.lastName === employeeName);
 }
 
+// Requisito 04
 function createEmployee(personalInfo, associatedWith) {
   return { ...personalInfo, ...associatedWith };
 }
 
+// Requisito 05
 function isManager(id) {
   return employees.some((person) => person.managers.includes(id));
 }
 
+// Requisito 06
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
   const newEmployee = { id, firstName, lastName, managers, responsibleFor };
   employees.push(newEmployee);
 }
 
+// Requisito 07
 function countAnimals(animal) {
   if (animal === undefined) {
     return species.reduce((acc, kindOfAnimal) => {
@@ -45,6 +52,7 @@ function countAnimals(animal) {
   return species.find((kindOfAnimal) => kindOfAnimal.name === animal).residents.length;
 }
 
+// Requisito 08
 function calculateEntry(entrants) {
   if (entrants === undefined || Object.keys(entrants).length === 0) {
     return 0;
@@ -86,6 +94,7 @@ const filterAnimals = (region, options = {}) => {
     ({ [kindOfAnimal.name]: arraysOfNames[index] }));
 };
 
+// Requisito 09
 function getAnimalMap(options) {
   return {
     NE: filterAnimals('NE', options),
@@ -98,6 +107,7 @@ function getAnimalMap(options) {
 const getDaySchedule = ({ open, close }) =>
   (open === close ? 'CLOSED' : `Open from ${open}am until ${close - 12}pm`);
 
+// Requisito 10
 function getSchedule(dayName = 'all') {
   const allDays = {
     Tuesday: `${getDaySchedule(hours.Tuesday)}`,
@@ -114,6 +124,7 @@ function getSchedule(dayName = 'all') {
   return { [dayName]: allDays[dayName] };
 }
 
+// Requisito 11
 function getOldestFromFirstSpecies(id) {
   const specieId = employees.find((person) => person.id === id).responsibleFor[0];
   const animalObj = species.find((kindOfAnimal) =>
@@ -122,6 +133,7 @@ function getOldestFromFirstSpecies(id) {
   return Object.values(animalObj);
 }
 
+// Requisito 12
 function increasePrices(percentage) {
   Object.entries(prices).forEach(([key, value]) => {
     prices[key] = Math.round(100 * value * (1 + percentage / 100)) / 100;
@@ -133,6 +145,7 @@ const replaceSpeciesId2Name = (array) =>
     species.find((specie) =>
       specie.id === id).name);
 
+// Requisito 13
 function getEmployeeCoverage(idOrName = 'all') {
   const allEmployees = employees.reduce((acc, person) => {
     const fullName = `${person.firstName} ${person.lastName}`;
