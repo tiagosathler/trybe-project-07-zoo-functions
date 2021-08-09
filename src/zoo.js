@@ -115,25 +115,20 @@ function increasePrices(percentage) {
   });
 }
 
-const replaceSpeciesId2Name = (array) =>
-  array.map((id) =>
-    species.find((specie) =>
-      specie.id === id).name);
-
 // Requisito 13
-function getEmployeeCoverage(idOrName = 'all') {
-  const allEmployees = employees.reduce((acc, person) => {
-    const fullName = `${person.firstName} ${person.lastName}`;
-    acc[fullName] = replaceSpeciesId2Name(person.responsibleFor);
+function getEmployeeCoverage(idOrName) {
+  const allEmployees = employees.reduce((acc, { firstName, lastName, responsibleFor }) => {
+    const fullName = `${firstName} ${lastName}`;
+    acc[fullName] = responsibleFor.map((currentId) =>
+      species.find(({ id }) =>
+        id === currentId).name);
     return acc;
   }, {});
-  if (idOrName === 'all') {
+  if (!idOrName) {
     return allEmployees;
   }
-  const { firstName, lastName } = employees.find((person) =>
-    person.firstName === idOrName
-    || person.lastName === idOrName
-    || person.id === idOrName);
+  const { firstName, lastName } = employees.find(({ firstName: a, lastName: b, id }) =>
+    a === idOrName || b === idOrName || id === idOrName);
   const fullName = `${firstName} ${lastName}`;
   return { [fullName]: allEmployees[fullName] };
 }
