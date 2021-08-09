@@ -3,10 +3,7 @@ const data = require('./data');
 
 // Requisito 01
 function getSpeciesByIds(...ids) {
-  if (ids.length === 0) {
-    return [];
-  }
-  return ids.map((id) => species.filter((kind) => kind.id === id)[0]);
+  return ids.length !== 0 ? ids.map((id) => species.filter((kind) => kind.id === id)[0]) : [];
 }
 
 // Requisito 02
