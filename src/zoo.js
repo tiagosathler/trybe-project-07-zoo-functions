@@ -31,8 +31,7 @@ function isManager(id) {
 
 // Requisito 06
 function addEmployee(id, firstName, lastName, managers = [], responsibleFor = []) {
-  const newEmployee = { id, firstName, lastName, managers, responsibleFor };
-  employees.push(newEmployee);
+  employees.push(createEmployee({ id, firstName, lastName, managers, responsibleFor }));
 }
 
 // Requisito 07
