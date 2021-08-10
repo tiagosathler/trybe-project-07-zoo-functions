@@ -49,7 +49,7 @@ function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0
   return adult * prices.Adult + child * prices.Child + senior * prices.Senior;
 }
 
-//  Requisito 09
+//  Requisito 09 - função de suporte
 const applyOptions = (residents, sex, sorted) => {
   let arrays = residents;
   if (sex) {
@@ -65,22 +65,22 @@ const applyOptions = (residents, sex, sorted) => {
   return arrays;
 };
 
+// Requisito 09
 function getAnimalMap({ includeNames, sex, sorted } = {}) {
-  const result = { NE: [], NW: [], SE: [], SW: [] };
-  Object.keys(result).forEach((region) => {
+  return ['NE', 'NW', 'SE', 'SW'].reduce((acc, region) => {
     const speciesByRegion = species.filter((animal) => animal.location === region);
     const animals = speciesByRegion.map((animal) => animal.name);
     if (includeNames) {
       const residents = speciesByRegion.map((animal) => animal.residents);
       const residentsApplied = applyOptions(residents, sex, sorted);
       animals.forEach((animal, index) => {
-        result[region].push({ [animal]: residentsApplied[index] });
+        acc[region].push({ [animal]: residentsApplied[index] });
       });
     } else {
-      result[region] = animals;
+      acc[region] = animals;
     }
-  });
-  return result;
+    return acc;
+  }, { NE: [], NW: [], SE: [], SW: [] });
 }
 
 // Requisito 10
