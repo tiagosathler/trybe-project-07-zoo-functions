@@ -49,43 +49,38 @@ function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0
   return adult * prices.Adult + child * prices.Child + senior * prices.Senior;
 }
 
-const applyOptions = (namesArrays, sexesArrays, { sex, sorted }) => {
-  let result = namesArrays;
+//  Requisito 09
+const applyOptions = (residents, sex, sorted) => {
+  let arrays = residents;
   if (sex) {
-    result = namesArrays.map((kindOfAnimal, index1) =>
-      kindOfAnimal.filter((nameOfAnimal, index2) =>
-        sexesArrays[index1][index2] === sex));
+    arrays = arrays.reduce((acc, kind) => {
+      acc.push(kind.filter((resident) => resident.sex === sex));
+      return acc;
+    }, []);
   }
+  arrays = arrays.map((kind) => kind.map((resident) => resident.name));
   if (sorted) {
-    result.forEach((kindOfAnimal) => kindOfAnimal.sort());
+    arrays.forEach((names) => names.sort());
   }
+  return arrays;
+};
+
+function getAnimalMap({ includeNames, sex, sorted } = {}) {
+  const result = { NE: [], NW: [], SE: [], SW: [] };
+  Object.keys(result).forEach((region) => {
+    const speciesByRegion = species.filter((animal) => animal.location === region);
+    const animals = speciesByRegion.map((animal) => animal.name);
+    const residents = speciesByRegion.map((animal) => animal.residents);
+    if (includeNames) {
+      const residentsApplied = applyOptions(residents, sex, sorted);
+      animals.forEach((animal, index) => {
+        result[region].push({ [animal]: residentsApplied[index] });
+      });
+    } else {
+      result[region] = animals;
+    }
+  });
   return result;
-};
-
-const filterAnimals = (region, options = {}) => {
-  const animalsByRegion = species
-    .filter((animal) => animal.location === region);
-  const typesOfAnimals = animalsByRegion.map((kindOfAnimal) => kindOfAnimal.name);
-  const allAnimalsByType = animalsByRegion.map((kindOfAnimal) =>
-    kindOfAnimal.residents.map((resident) => resident.name));
-  const allAnimalSexesByType = animalsByRegion.map((kindOfAnimal) =>
-    kindOfAnimal.residents.map((resident) => resident.sex));
-  if (!options.includeNames) {
-    return typesOfAnimals;
-  }
-  const arraysOfNames = applyOptions(allAnimalsByType, allAnimalSexesByType, options);
-  return animalsByRegion.map((kindOfAnimal, index) =>
-    ({ [kindOfAnimal.name]: arraysOfNames[index] }));
-};
-
-// Requisito 09
-function getAnimalMap(options) {
-  return {
-    NE: filterAnimals('NE', options),
-    NW: filterAnimals('NW', options),
-    SE: filterAnimals('SE', options),
-    SW: filterAnimals('SW', options),
-  };
 }
 
 // Requisito 10
