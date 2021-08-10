@@ -45,7 +45,7 @@ function countAnimals(animal) {
 }
 
 // Requisito 08
-function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0 } = 0) {
+function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0 } = {}) {
   return adult * prices.Adult + child * prices.Child + senior * prices.Senior;
 }
 
