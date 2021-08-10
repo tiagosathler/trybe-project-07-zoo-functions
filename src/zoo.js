@@ -70,8 +70,8 @@ function getAnimalMap({ includeNames, sex, sorted } = {}) {
   Object.keys(result).forEach((region) => {
     const speciesByRegion = species.filter((animal) => animal.location === region);
     const animals = speciesByRegion.map((animal) => animal.name);
-    const residents = speciesByRegion.map((animal) => animal.residents);
     if (includeNames) {
+      const residents = speciesByRegion.map((animal) => animal.residents);
       const residentsApplied = applyOptions(residents, sex, sorted);
       animals.forEach((animal, index) => {
         result[region].push({ [animal]: residentsApplied[index] });
