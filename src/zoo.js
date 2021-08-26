@@ -49,7 +49,18 @@ function calculateEntry({ Adult: adult = 0, Child: child = 0, Senior: senior = 0
   return adult * prices.Adult + child * prices.Child + senior * prices.Senior;
 }
 
-//  Requisito 09 - função de suporte
+// Requisito 09 - função de suporte - retorna um array com as regiões
+const getRegions = (array) => (
+  array.reduce((acc, specie) => {
+    if (!acc.includes(specie.location)) {
+      acc.push(specie.location);
+    }
+    return acc;
+  }, [])
+);
+
+// Requisito 09 - função de suporte - retorna os arrays com os nomes dos 'residents'
+// filtrados por sexo (opcional) e ordenados (opcional)
 const applyOptions = (residents, sex, sorted) => {
   let arrays = residents;
   if (sex) {
@@ -67,20 +78,21 @@ const applyOptions = (residents, sex, sorted) => {
 
 // Requisito 09
 function getAnimalMap({ includeNames, sex, sorted } = {}) {
-  return ['NE', 'NW', 'SE', 'SW'].reduce((acc, region) => {
+  return getRegions(species).reduce((acc, region) => {
     const speciesByRegion = species.filter((animal) => animal.location === region);
     const animals = speciesByRegion.map((animal) => animal.name);
     if (includeNames) {
-      const residents = speciesByRegion.map((animal) => animal.residents);
-      const residentsApplied = applyOptions(residents, sex, sorted);
+      acc[region] = [];
+      let residents = speciesByRegion.map((animal) => animal.residents);
+      residents = applyOptions(residents, sex, sorted);
       animals.forEach((animal, index) => {
-        acc[region].push({ [animal]: residentsApplied[index] });
+        acc[region].push({ [animal]: residents[index] });
       });
     } else {
       acc[region] = animals;
     }
     return acc;
-  }, { NE: [], NW: [], SE: [], SW: [] });
+  }, {});
 }
 
 // Requisito 10
